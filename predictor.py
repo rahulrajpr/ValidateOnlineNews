@@ -4,7 +4,7 @@ def prediction(news):
     # libraries required
     import numpy as np
     import pickle
-    from tensorflow import keras as kr
+    from keras.preprocessing import sequence
 
     # getting the picke files for etl & prediction
     wcount = pickle.load(open('word_counter.pkl', 'rb'))
@@ -16,7 +16,7 @@ def prediction(news):
     inp_array = np.array(news).reshape(-1)
     input_token = token.texts_to_sequences(inp_array)  # Tokenize the news headline string
     # Padding the tokenized varible - with maximum word count
-    input_token_padded = kr.preprocessing.sequence.pad_sequences(input_token, maxlen=wcount, padding='post')
+    input_token_padded = sequence.pad_sequences(input_token, maxlen=wcount, padding='post')
     input_token_padded_sc = scaler.transform(input_token_padded)  # scaling
 
     pred = classifier.predict(input_token_padded_sc)  # prediction
